@@ -22,13 +22,17 @@ var Library = {
   },
 };
 
+
+
 var handlers = {
    
   addBook: function() {
-    var titleVal = document.getElementById("title");
-    var authorVal = document.getElementById("author");
-    var pagesVal = document.getElementById("pages");
-    var statusVal = document.getElementById("status"); 
+    var titleVal = document.getElementById('title');
+    var authorVal = document.getElementById('author');
+    var pagesVal = document.getElementById('pages');
+    var statusVal = document.getElementById('status');
+    var viewForm = document.getElementById('view-form');
+    var form = document.getElementById('form'); 
     var status;
     if(statusVal.value == 'true'){ status = true;}
     if(statusVal.value == 'false'){ status = false;}
@@ -38,6 +42,8 @@ var handlers = {
     authorVal.value= '';
     pagesVal.value= '';
     statusVal.value = 'true';
+    form.style.display = 'none';
+    viewForm.style.display = 'block';
     render.displayBooks();
   },
   
@@ -48,8 +54,7 @@ var handlers = {
  toggleRead: function(position){
     Library.toggleRead(position);
     render.displayBooks();
-   },
- 
+   }, 
 };
 
 var render = {
@@ -67,24 +72,42 @@ var render = {
         } else {
           completion = 'Unread';
         }
-      bookCard.textContent = (book.title + "\n" + book.author + "\n" + book.pages + "\n" + "Status: " + completion);
+      bookCard.textContent = (book.title + '\n' + book.author + '\n' + book.pages + '\n' + 'Status: ' + completion);
       var toggleButton = document.createElement('button');
       toggleButton.classList.add('toggle-button');
       toggleButton.value = i;
       toggleButton.addEventListener('click', function(e){
         handlers.toggleRead(e.target.value);
-      })
+      });
       var deleteButton = document.createElement('button');
       deleteButton.classList.add('delete-button');
       deleteButton.value = i;
       deleteButton.addEventListener('click', function(e){
         handlers.deleteBook(e.target.value);
-      })
+      });
       bookCard.appendChild(deleteButton);
       bookCard.appendChild(toggleButton); 
       libraryDiv.appendChild(bookCard);
     }
+  },
+  showForm: function(){
+    var viewForm = document.getElementById('view-form');
+    var form = document.getElementById('form');
+    form.style.display = 'block';
+    viewForm.style.display = 'none';
   }
 };
 
-
+(function initial(){
+form.style.display = 'none';
+Library.addBook('You Dont Know Js', 'Kyle Simpson', '1142', true);
+Library.addBook('Eloquent JavaScript', 'Marijn Haverbeke', '472', false);
+Library.addBook('Blood of Elves', 'Andrzej Sapkowski', '416', true);
+Library.addBook('You Dont Know Js', 'Kyle Simpson', '1142', true);
+Library.addBook('Eloquent JavaScript', 'Marijn Haverbeke', '472', false);
+Library.addBook('Blood of Elves', 'Andrzej Sapkowski', '416', true);
+Library.addBook('You Dont Know Js', 'Kyle Simpson', '1142', true);
+Library.addBook('Eloquent JavaScript', 'Marijn Haverbeke', '472', false);
+Library.addBook('Blood of Elves', 'Andrzej Sapkowski', '416', true);
+render.displayBooks();
+})();
