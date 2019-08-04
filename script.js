@@ -1,6 +1,5 @@
 "use strict"
 
-
 var Library = {
   myLibrary : [],
 
@@ -12,16 +11,13 @@ var Library = {
     didRead : didRead
     });
   },
-
   deleteBook: function(position){
     this.myLibrary.splice(position,1);
   },
-
   toggleRead: function(position) {
     this.myLibrary[position].didRead = !this.myLibrary[position].didRead;
   },
 };
-
 
 
 var handlers = {
@@ -46,7 +42,6 @@ var handlers = {
     viewForm.style.display = 'block';
     render.displayBooks();
   },
-  
   deleteBook: function(position){
     Library.deleteBook(position);
     render.displayBooks();
@@ -57,6 +52,7 @@ var handlers = {
    }, 
 };
 
+
 var render = {
 
   displayBooks: function(){
@@ -66,27 +62,36 @@ var render = {
       var bookCard = document.createElement('div');
       bookCard.classList.add('text-area');
       var book = Library.myLibrary[i];
-      var completion;
-        if (book.didRead === true){
-          completion = 'Read';
-        } else {
-          completion = 'Unread';
-        }
-      bookCard.textContent = (book.title + '\n' + book.author + '\n' + book.pages + '\n' + 'Status: ' + completion);
+
+      bookCard.textContent = (book.title + '\n' + book.author + '\n' + book.pages + ' pages' + '\n' + 'Status: ');
       var toggleButton = document.createElement('button');
       toggleButton.classList.add('toggle-button');
       toggleButton.value = i;
+      var completion;
+      if (book.didRead === true){
+        completion = 'Read';
+        toggleButton.classList.add('active');
+        toggleButton.classList.remove('passive');
+      } else {
+        completion = 'Unread';
+        toggleButton.classList.add('passive');
+        toggleButton.classList.remove('active');
+      }
+      toggleButton.textContent = completion;
       toggleButton.addEventListener('click', function(e){
         handlers.toggleRead(e.target.value);
       });
-      var deleteButton = document.createElement('button');
-      deleteButton.classList.add('delete-button');
-      deleteButton.value = i;
-      deleteButton.addEventListener('click', function(e){
+      var img = document.createElement("img");
+      img.classList.add('delete-img');
+      img.src = "./images/delete.png";
+      img.style.width = '38px';
+      img.style.height = '38px';
+      img.value = i;
+      img.addEventListener('click', function(e){
         handlers.deleteBook(e.target.value);
       });
-      bookCard.appendChild(deleteButton);
       bookCard.appendChild(toggleButton); 
+      bookCard.appendChild(img);
       libraryDiv.appendChild(bookCard);
     }
   },
@@ -95,7 +100,15 @@ var render = {
     var form = document.getElementById('form');
     form.style.display = 'block';
     viewForm.style.display = 'none';
+  },
+  cancelForm: function(){
+    var viewForm = document.getElementById('view-form');
+    var form = document.getElementById('form');
+    viewForm.style.display = 'block';
+    form.style.display = 'none';
+    
   }
+  
 };
 
 (function initial(){
@@ -103,11 +116,6 @@ form.style.display = 'none';
 Library.addBook('You Dont Know Js', 'Kyle Simpson', '1142', true);
 Library.addBook('Eloquent JavaScript', 'Marijn Haverbeke', '472', false);
 Library.addBook('Blood of Elves', 'Andrzej Sapkowski', '416', true);
-Library.addBook('You Dont Know Js', 'Kyle Simpson', '1142', true);
-Library.addBook('Eloquent JavaScript', 'Marijn Haverbeke', '472', false);
-Library.addBook('Blood of Elves', 'Andrzej Sapkowski', '416', true);
-Library.addBook('You Dont Know Js', 'Kyle Simpson', '1142', true);
-Library.addBook('Eloquent JavaScript', 'Marijn Haverbeke', '472', false);
-Library.addBook('Blood of Elves', 'Andrzej Sapkowski', '416', true);
+
 render.displayBooks();
 })();
