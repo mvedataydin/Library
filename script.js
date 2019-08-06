@@ -5,10 +5,10 @@ var Library = {
 
   addBook: function(title, author, pages, didRead) {
     this.myLibrary.push({
-    title : title,
-    author : author,
-    pages : pages,
-    didRead : didRead
+    title,
+    author,
+    pages,
+    didRead
     });
   },
   deleteBook: function(position){
@@ -27,19 +27,11 @@ var handlers = {
     var authorVal = document.getElementById('author');
     var pagesVal = document.getElementById('pages');
     var statusVal = document.getElementById('status');
-    var viewForm = document.getElementById('view-form');
-    var form = document.getElementById('form'); 
     var status;
     if(statusVal.value == 'true'){ status = true;}
     if(statusVal.value == 'false'){ status = false;}
     Library.addBook(titleVal.value, authorVal.value, pagesVal.value, status);
-    
-    titleVal.value= '';
-    authorVal.value= '';
-    pagesVal.value= '';
-    statusVal.value = 'true';
-    form.style.display = 'none';
-    viewForm.style.display = 'block';
+    render.refresh();
     render.displayBooks();
   },
   deleteBook: function(position){
@@ -49,12 +41,11 @@ var handlers = {
  toggleRead: function(position){
     Library.toggleRead(position);
     render.displayBooks();
-   }, 
+   }
 };
 
 
 var render = {
-
   displayBooks: function(){
     var libraryDiv = document.querySelector('.container');
     libraryDiv.innerHTML = '';
@@ -62,7 +53,6 @@ var render = {
       var bookCard = document.createElement('div');
       bookCard.classList.add('text-area');
       var book = Library.myLibrary[i];
-
       bookCard.textContent = (book.title + '\n' + book.author + '\n' + book.pages + ' pages' + '\n' + 'Status: ');
       var toggleButton = document.createElement('button');
       toggleButton.classList.add('toggle-button');
@@ -106,9 +96,21 @@ var render = {
     var form = document.getElementById('form');
     viewForm.style.display = 'block';
     form.style.display = 'none';
-    
+  },
+  refresh: function(){
+    var viewForm = document.getElementById('view-form');
+    var form = document.getElementById('form'); 
+    var titleVal = document.getElementById('title');
+    var authorVal = document.getElementById('author');
+    var pagesVal = document.getElementById('pages');
+    var statusVal = document.getElementById('status');
+    titleVal.value= '';
+    authorVal.value= '';
+    pagesVal.value= '';
+    statusVal.value = 'true';
+    form.style.display = 'none';
+    viewForm.style.display = 'block';
   }
-  
 };
 
 (function initial(){
@@ -116,6 +118,5 @@ form.style.display = 'none';
 Library.addBook('You Dont Know Js', 'Kyle Simpson', '1142', true);
 Library.addBook('Eloquent JavaScript', 'Marijn Haverbeke', '472', false);
 Library.addBook('Blood of Elves', 'Andrzej Sapkowski', '416', true);
-
 render.displayBooks();
 })();
